@@ -5,10 +5,22 @@ import { validationResult } from "express-validator";
 //import { validationResult } from "express-validator";
 
 
-const usuariosGet = (req, res = response) => {
-    const params = req.query;
+const usuariosGet = async(req, res = response) => {
+   
+    const { limite = 5, desde = 0 } = req.query;
+    const query = { estado: true };
+   
+
+    const [total, usuarios]= await Promise.all([
+        Usuario.countDocuments(query),
+        Usuario.find(query)
+            .skip(Number(desde))
+            .limit(Number(limite))
+    ])
+
     res.json({
-        msg: "get API - desde controlador"
+        total,
+        usuarios
     });
 }
 
@@ -25,10 +37,7 @@ const usuariosPut = async(req, res = response) => {
 
     const usuario = await Usuario.findByIdAndUpdate(id, resto);
     
-    res.json({
-        msg: "put API - desde controlador",
-        id
-    });
+    res.json(usuario);
 }
 
 const usuariosPost = async(req, res = response) => {
@@ -55,10 +64,12 @@ const usuariosPost = async(req, res = response) => {
     });
 }
 
-const usuariosDelete = (req, res = response) => {
-    res.json({
-        msg: "delete API - desde controlador"
-    });
+const usuariosDelete = async(req, res = response) => {
+    const {id}  = req.params;
+    //const usuario = await Usuario.bindByIdAndDelete(id) -> borrado físico
+
+    const usuario = await Usuario.findByIdAndUpdate(id, {estado: false});
+    res.json(usuario);
 }
 
 export {
