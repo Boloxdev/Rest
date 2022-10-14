@@ -34,11 +34,14 @@
 
            const body = {id_token: response.credential};
            fetch('https://rest-boloxdev.herokuapp.com/api/auth/google', {
-            method: 'POST',
-            headers: {
-               'Content-Type':'application/json'
-            },
-            body: JSON.stringify(body)
+               method: 'POST',
+               headers: {
+                  'Content-Type':'application/json'
+               },
+               body: JSON.stringify(body),
+               referrerPolicy: {
+               policy: 'strict-origin-when-cross-origin'
+               }
            })
             .then( resp => resp.json() )
             .then( resp => {
