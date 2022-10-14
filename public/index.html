@@ -38,10 +38,7 @@
                headers: {
                   'Content-Type':'application/json'
                },
-               body: JSON.stringify(body),
-               referrerPolicy: {
-               policy: 'strict-origin-when-cross-origin'
-               }
+               body: JSON.stringify(body)
            })
             .then( resp => resp.json() )
             .then( resp => {
