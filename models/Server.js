@@ -3,6 +3,9 @@ import cors from "cors";
 import router from "../routes/usuarios.js";
 import routerAuth from "../routes/auth.js";
 import { dbConnection } from "../database/config.js";
+import { routerCategories } from "../routes/categorias.js";
+import { routerProductos } from "../routes/productos.js";
+import { routerBuscar } from "../routes/buscar.js";
 
 class Server {
     constructor(){
@@ -10,7 +13,9 @@ class Server {
         this.port = process.env.PORT;
         this.usuariosPath = '/api/usuarios';
         this.authPath = '/api/auth';
-
+        this.categoriasPath = '/api/categorias';
+        this.productoPath = '/api/productos';
+        this.buscarPath = '/api/buscar';
         //conectar a BBDD
         this.conectarDB();
 
@@ -38,7 +43,10 @@ class Server {
 
     routes() {
         this.app.use(this.authPath, routerAuth);
+        this.app.use(this.categoriasPath, routerCategories);
         this.app.use(this.usuariosPath, router);
+        this.app.use(this.productoPath, routerProductos);
+        this.app.use(this.buscarPath, routerBuscar);
     }
 
     listen(){
